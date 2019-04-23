@@ -16,11 +16,13 @@ class AddTodoViewController: UIViewController {
     @IBOutlet weak var prioritySegmentedControl: UISegmentedControl!
     @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(with:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        userTaskTextView.becomeFirstResponder()
     }
     
     // MARK: Actions
@@ -43,9 +45,11 @@ class AddTodoViewController: UIViewController {
     
     @IBAction func canel(_ sender: UIButton) {
         dismiss(animated: true)
+        userTaskTextView.resignFirstResponder()
     }
     
     @IBAction func done(_ sender: UIButton) {
+        dismiss(animated: true)
     }
     /*
     // MARK: - Navigation
@@ -57,4 +61,19 @@ class AddTodoViewController: UIViewController {
     }
     */
 
+}
+
+extension AddTodoViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        if doneButton.isHidden {
+            userTaskTextView.text.removeAll()
+            userTaskTextView.textColor = .white
+            
+            doneButton.isHidden = false
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
 }
