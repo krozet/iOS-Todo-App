@@ -13,7 +13,7 @@
         <!--Tasks-->
         <scene sceneID="egz-lL-8Vc">
             <objects>
-                <tableViewController id="bzv-Ue-9fW" sceneMemberID="viewController">
+                <tableViewController id="bzv-Ue-9fW" customClass="TodoTableViewController" customModule="TodoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="W4q-QQ-Wrx">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -55,10 +55,10 @@
             </objects>
             <point key="canvasLocation" x="976.81159420289862" y="105.80357142857143"/>
         </scene>
-        <!--View Controller-->
+        <!--Add Todo View Controller-->
         <scene sceneID="bgG-sz-rmp">
             <objects>
-                <viewController id="sLC-Wk-6jE" sceneMemberID="viewController">
+                <viewController id="sLC-Wk-6jE" customClass="AddTodoViewController" customModule="TodoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1uu-FV-CXD">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -81,14 +81,17 @@
                                         <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="28"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="sLC-Wk-6jE" id="HGK-bu-7qs"/>
+                                        </connections>
                                     </textView>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="i3c-b6-JGj">
-                                <rect key="frame" x="16" y="777.5" width="382" height="84.5"/>
+                                <rect key="frame" x="16" y="790" width="382" height="72"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="5aB-1c-Xkv">
-                                        <rect key="frame" x="0.0" y="0.0" width="382" height="41.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="382" height="29"/>
                                         <segments>
                                             <segment title="Low"/>
                                             <segment title="Medium"/>
@@ -97,10 +100,10 @@
                                         <color key="tintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </segmentedControl>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="lvI-Tv-XX2">
-                                        <rect key="frame" x="0.0" y="48.5" width="382" height="36"/>
+                                        <rect key="frame" x="0.0" y="36" width="382" height="36"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hUr-Zo-MCh">
-                                                <rect key="frame" x="0.0" y="0.0" width="70" height="36"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="36"/>
                                                 <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="5SI-E2-X8I"/>
@@ -114,9 +117,12 @@
                                                         <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="canel:" destination="sLC-Wk-6jE" eventType="touchUpInside" id="RjV-dA-ysu"/>
+                                                </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="245" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H8a-3H-emi">
-                                                <rect key="frame" x="78" y="0.0" width="304" height="36"/>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="245" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H8a-3H-emi">
+                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="36"/>
                                                 <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                 <state key="normal" title="Done">
@@ -127,6 +133,9 @@
                                                         <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="done:" destination="sLC-Wk-6jE" eventType="touchUpInside" id="e1V-hP-kBs"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -137,15 +146,20 @@
                         <constraints>
                             <constraint firstItem="t3e-f0-sVK" firstAttribute="leading" secondItem="hEU-SB-bzW" secondAttribute="leading" constant="16" id="0K7-lb-6gJ"/>
                             <constraint firstItem="hEU-SB-bzW" firstAttribute="trailing" secondItem="i3c-b6-JGj" secondAttribute="trailing" constant="16" id="Hhe-2y-no4"/>
-                            <constraint firstItem="i3c-b6-JGj" firstAttribute="top" secondItem="t3e-f0-sVK" secondAttribute="bottom" constant="375" id="Jaf-EW-4GQ"/>
                             <constraint firstItem="hEU-SB-bzW" firstAttribute="trailing" secondItem="t3e-f0-sVK" secondAttribute="trailing" constant="16" id="Qxk-5O-IUE"/>
                             <constraint firstItem="i3c-b6-JGj" firstAttribute="leading" secondItem="hEU-SB-bzW" secondAttribute="leading" constant="16" id="R4l-4f-bhR"/>
                             <constraint firstItem="t3e-f0-sVK" firstAttribute="top" secondItem="hEU-SB-bzW" secondAttribute="top" id="XXM-kn-o20"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="i3c-b6-JGj" secondAttribute="bottom" id="rAR-2f-Yc3"/>
+                            <constraint firstAttribute="bottom" secondItem="i3c-b6-JGj" secondAttribute="bottom" constant="34" id="rAR-2f-Yc3"/>
                             <constraint firstItem="t3e-f0-sVK" firstAttribute="height" secondItem="1uu-FV-CXD" secondAttribute="height" multiplier="0.4" id="vCN-ct-ALh"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="hEU-SB-bzW"/>
                     </view>
+                    <connections>
+                        <outlet property="bottomConstraint" destination="rAR-2f-Yc3" id="a0g-TV-Mqh"/>
+                        <outlet property="doneButton" destination="H8a-3H-emi" id="v1p-3L-ibt"/>
+                        <outlet property="prioritySegmentedControl" destination="5aB-1c-Xkv" id="VPX-Vh-TsB"/>
+                        <outlet property="userTaskTextView" destination="fui-2h-Wc2" id="9Cz-1b-YVR"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Ya-nX-00M" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
