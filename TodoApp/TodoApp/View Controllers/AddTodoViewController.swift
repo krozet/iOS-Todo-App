@@ -7,11 +7,15 @@
 //
 
 import UIKit
+import CoreData
 
 class AddTodoViewController: UIViewController {
     
-    //MARK: Outlets
-
+    // MARK: - Properties
+    
+    var managedContext: NSManagedObjectContext!
+    
+    // MARK: Outlets
     @IBOutlet weak var userTaskTextView: UITextView!
     @IBOutlet weak var prioritySegmentedControl: UISegmentedControl!
     @IBOutlet weak var doneButton: UIButton!
@@ -49,7 +53,25 @@ class AddTodoViewController: UIViewController {
     }
     
     @IBAction func done(_ sender: UIButton) {
-        dismiss(animated: true)
+        guard let title = userTaskTextView.text, !title.isEmpty else {
+            // tell user you can't save empty Todo's
+            return
+        }
+        
+        let todo = Todo(context: managedContext)
+        todo.title = title
+        todo.priority = Int16(prioritySegmentedControl.selectedSegmentIndex)
+        todo.date = Date()
+        
+        do {
+            try managedContext.save()
+            dismiss(animated: true)
+            userTaskTextView.resignFirstResponder()
+        } catch {
+            print("Error saveing todo: \(error)")
+        }
+        
+        
     }
     /*
     // MARK: - Navigation

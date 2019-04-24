@@ -7,20 +7,40 @@
 //
 
 import UIKit
+import CoreData
 
 class TodoTableViewController: UITableViewController {
 
+    var resultsController: NSFetchedResultsController<Todo>!
+    let coreDataStack = CoreDataStack()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
+        
+        // Create a request
+        let request: NSFetchRequest<Todo> = Todo.fetchRequest()
+        let sortDescriptors = NSSortDescriptor(key: "date", ascending: true)
+        
+        // Initialize results controller
+        request.sortDescriptors = [sortDescriptors]
+        resultsController = NSFetchedResultsController (
+            fetchRequest: request,
+            managedObjectContext: coreDataStack.managedContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        do {
+            // Fetch data
+            try resultsController.performFetch()
+        } catch {
+            print("Perform fetch error: \(error)")
+        }
     }
 
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 10
+        return resultsController.sections?[section].objects?.count ?? 0
     }
 
     
@@ -28,6 +48,8 @@ class TodoTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath)
 
         // Configure the cell...
+        let todo = resultsController.object(at: indexPath)
+        cell.textLabel?.text = todo.title
 
         return cell
     }
@@ -54,14 +76,15 @@ class TodoTableViewController: UITableViewController {
         return UISwipeActionsConfiguration(actions: [action])
     }
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if let _ = sender as? UIBarButtonItem, let vc = segue.destination as? AddTodoViewController {
+            vc.managedContext = coreDataStack.managedContext
+        }
     }
-    */
+    
 
 }
