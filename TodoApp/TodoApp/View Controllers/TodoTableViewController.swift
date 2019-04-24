@@ -35,11 +35,23 @@ class TodoTableViewController: UITableViewController {
     // MARK: - Table view delegate
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        return nil
+        let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+            completion(true)
+        }
+        action.image = #imageLiteral(resourceName: "trashcan")
+        action.backgroundColor = .red
+        
+        return UISwipeActionsConfiguration(actions: [action])
     }
     
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        return nil
+        let action = UIContextualAction(style: .destructive, title: "Check") { (action, view, completion) in
+            completion(true)
+        }
+        action.image = #imageLiteral(resourceName: "checkmark")
+        action.backgroundColor = #colorLiteral(red: 0.4500938654, green: 0.9813225865, blue: 0.4743030667, alpha: 1)
+        
+        return UISwipeActionsConfiguration(actions: [action])
     }
 
     /*
