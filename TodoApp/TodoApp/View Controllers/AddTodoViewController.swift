@@ -68,10 +68,8 @@ class AddTodoViewController: UIViewController {
             dismiss(animated: true)
             userTaskTextView.resignFirstResponder()
         } catch {
-            print("Error saveing todo: \(error)")
+            print("Error saving todo: \(error)")
         }
-        
-        
     }
     /*
     // MARK: - Navigation

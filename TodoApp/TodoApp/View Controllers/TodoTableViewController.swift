@@ -85,6 +85,4 @@ class TodoTableViewController: UITableViewController {
             vc.managedContext = coreDataStack.managedContext
         }
     }
-    
-
 }
