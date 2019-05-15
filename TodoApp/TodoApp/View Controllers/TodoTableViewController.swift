@@ -61,7 +61,15 @@ class TodoTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-            completion(true)
+            let todo = self.resultsController.object(at: indexPath)
+            self.resultsController.managedObjectContext.delete(todo)
+            do {
+                try self.resultsController.managedObjectContext.save()
+                completion(true)
+            } catch {
+                print("deletion failed \(error)")
+                completion(false)
+            }
         }
         action.image = #imageLiteral(resourceName: "trashcan")
         action.backgroundColor = .red
@@ -78,6 +86,10 @@ class TodoTableViewController: UITableViewController {
         
         return UISwipeActionsConfiguration(actions: [action])
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "ShowAddTodo", sender: tableView.cellForRow(at: indexPath))
+    }
 
     
     // MARK: - Navigation
@@ -86,6 +98,14 @@ class TodoTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let _ = sender as? UIBarButtonItem, let vc = segue.destination as? AddTodoViewController {
             vc.managedContext = resultsController.managedObjectContext
+        }
+        
+        if let cell = sender as? UITableViewCell, let vc = segue.destination as? AddTodoViewController {
+            vc.managedContext = resultsController.managedObjectContext
+            if let indexPath = tableView.indexPath(for: cell) {
+                let todo = resultsController.object(at: indexPath)
+                vc.todo = todo
+            }
         }
     }
 }
@@ -102,11 +122,20 @@ extension TodoTableViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 
             switch type {
-                case .insert:
-                    if let indexPath = newIndexPath {
-                        tableView.insertRows(at: [indexPath], with: .automatic)
-                    }
-                default:
+            case .insert:
+                if let indexPath = newIndexPath {
+                    tableView.insertRows(at: [indexPath], with: .automatic)
+                }
+            case .delete:
+                if let indexPath = indexPath {
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                }
+            case .update:
+                if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) {
+                    let todo = resultsController.object(at: indexPath)
+                    cell.textLabel?.text = todo.title
+                }
+            default:
                     break
             }
     }
