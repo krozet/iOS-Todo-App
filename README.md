@@ -10,5 +10,6 @@ App creator: Keawa Rozet
   The app uses Core Data to store persisting information and goes through the processes of fetching the data, editing it, and saving it.
   
 # App in Action  
+![](https://github.com/krozet/iOS-Todo-App/blob/master/Assets/tasks_screen.png?raw=true)
 ![](https://github.com/krozet/iOS-Todo-App/blob/master/Assets/enter_task.png?raw=true)  
-![](https://github.com/krozet/iOS-Todo-App/blob/master/Assets/tasks_screen.png?raw=true)  
+  
