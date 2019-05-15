@@ -28,6 +28,9 @@ class TodoTableViewController: UITableViewController {
             managedObjectContext: coreDataStack.managedContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
+        
+        resultsController.delegate = self
+        
         do {
             // Fetch data
             try resultsController.performFetch()
@@ -40,7 +43,7 @@ class TodoTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return resultsController.sections?[section].objects?.count ?? 0
+        return resultsController.sections?[section].numberOfObjects ?? 0
     }
 
     
@@ -82,7 +85,29 @@ class TodoTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let _ = sender as? UIBarButtonItem, let vc = segue.destination as? AddTodoViewController {
-            vc.managedContext = coreDataStack.managedContext
+            vc.managedContext = resultsController.managedObjectContext
         }
+    }
+}
+
+extension TodoTableViewController: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+
+            switch type {
+                case .insert:
+                    if let indexPath = newIndexPath {
+                        tableView.insertRows(at: [indexPath], with: .automatic)
+                    }
+                default:
+                    break
+            }
     }
 }

@@ -47,9 +47,13 @@ class AddTodoViewController: UIViewController {
         }
     }
     
-    @IBAction func canel(_ sender: UIButton) {
+    fileprivate func dismissAndResign() {
         dismiss(animated: true)
         userTaskTextView.resignFirstResponder()
+    }
+    
+    @IBAction func canel(_ sender: UIButton) {
+        dismissAndResign()
     }
     
     @IBAction func done(_ sender: UIButton) {
@@ -58,15 +62,14 @@ class AddTodoViewController: UIViewController {
             return
         }
         
-        let todo = Todo(usedContext: managedContext)
+        let todo = Todo(context: managedContext)
         todo.title = title
         todo.priority = Int16(prioritySegmentedControl.selectedSegmentIndex)
         todo.date = Date()
         
         do {
             try managedContext.save()
-            dismiss(animated: true)
-            userTaskTextView.resignFirstResponder()
+            dismissAndResign()
         } catch {
             print("Error saving todo: \(error)")
         }
