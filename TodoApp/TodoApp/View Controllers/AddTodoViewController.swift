@@ -58,7 +58,7 @@ class AddTodoViewController: UIViewController {
             return
         }
         
-        let todo = Todo(context: managedContext)
+        let todo = Todo(usedContext: managedContext)
         todo.title = title
         todo.priority = Int16(prioritySegmentedControl.selectedSegmentIndex)
         todo.date = Date()
@@ -95,5 +95,13 @@ extension AddTodoViewController: UITextViewDelegate {
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
+    }
+}
+
+extension NSManagedObject {
+    convenience init (usedContext: NSManagedObjectContext) {
+        let name = String(describing: type(of: self))
+        let entity = NSEntityDescription.entity(forEntityName: name, in: usedContext)!
+        self.init(entity: entity, insertInto: usedContext)
     }
 }
